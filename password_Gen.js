@@ -9,6 +9,7 @@ var symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", 
     "[", "}", "]", "|", ":", ";", "'", '"', "<", ",", ">", ".", "?", "/"];
 var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var elements = [];
+var prevLength = [];
 var droppedDown = false;
 
 allSymbols.addEventListener("click", revealSymbols); //placed event listeners in order of how a client would use them
@@ -24,18 +25,23 @@ function revealSymbols() {  //menu to exclude symbols
         for (var idx = 0; idx < symbols.length; idx++) {
 
             var listOfSymbols = document.getElementById("underAllSymbols");
+            var package = document.createElement("label");
             var aSymbol = document.createElement("input");
             aSymbol.setAttribute("type", "checkbox");
             var newLabel = document.createElement("label");
             newLabel.textContent = symbols[idx];
             aSymbol.value = newLabel.textContent;
-            listOfSymbols.style.marginLeft = "40px";
+            package.append(aSymbol);
+            package.append(newLabel);
+            package.style.display = "in-line"; // unsure of how to vertically align all the checkboxes in the center
+            // aSymbol.style.verticalAlign = "middle";
+            // listOfSymbols.style.margin = "in-line";
+            // newLabel.style.verticalAlign = "middle";
             newLabel.style.marginLeft = "5px";
             if (allSymbols.checked) {
                 aSymbol.checked = true;
             }
-            listOfSymbols.append(aSymbol);
-            listOfSymbols.append(newLabel);
+            listOfSymbols.append(package);
             listOfSymbols.append(document.createElement("br"));
         }
 
@@ -60,7 +66,7 @@ buttonPressed.addEventListener("click", scrambleElements);
 buttonPressed.addEventListener("click", generatePassword);
 
 function scrambleElements() { //why? because I might as well practice
-    //yahoo now O(log n), concise, and not buggy :D
+    // O(log n), concise, and not buggy :D
 
     console.log(document.getElementById("underAllSymbols"));
     var checkboxes = document.getElementById("underAllSymbols").querySelectorAll('input[type=checkbox]', 'checked'); //can get all input, iterate through to check if checked, then add to symbolsForRemoval
@@ -93,19 +99,22 @@ function generatePassword() {
     var password = "";
     document.getElementById("generatedPassword").textContent = "";
     var num = document.getElementById("inputBox").value;
-
-    if (num == "") {
+    
+    if (num == "" && prevLength.length > 0) {
+        num = prevLength[prevLength.length - 1];
+    } else if (num == "") {
         num = 8;
-    }
+    } 
 
     if (!Number.isInteger(parseInt(num)) || num < 8 || num > 20) {
         document.getElementById("question").textContent = "Please type in a valid number.";
     } 
     else {
-        document.getElementById("question").textContent = "";
+        prevLength.push(num);
+        document.getElementById("question").textContent = "Length: " + num;
         var idx = 0;
             while (idx < num) {
-                //random int from 0 to elements length idk how much that is i didnt count
+                //random int from 0 to elements length
                 var j = Math.floor(Math.random() * elements.length);
                 password += elements[j];
                 idx++;
@@ -113,7 +122,7 @@ function generatePassword() {
         document.getElementById("inputBox").value = "";
         document.getElementById("generatedPassword").textContent = password;
     }
-    console.log(password);
-    console.log(elements);
+    // console.log(password);
+    // console.log(elements);
     
 }
