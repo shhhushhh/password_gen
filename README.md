@@ -10,4 +10,4 @@ Here is a demo of the website:
 
 https://user-images.githubusercontent.com/57884384/129824493-85e934ad-fd00-4a59-b2a2-bbb5c31f93b0.mp4
 
-You can use the website by downloading the main branch and running it in any browser other than Internet Explorer.
+You can use the website by downloading the assets and the code in the main branch and running it in any browser other than Internet Explorer.
